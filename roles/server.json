@@ -1,0 +1,43 @@
+{
+  "name": "server",
+  "description": "glusterfs server role",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+	  "glusterfs":{
+		  "layer":"glusterfs",
+		  "mount_point":"/mnt/gluster_vagrant",
+		  "volume_name":"glusterfs_vagrant",
+		  "peers":{
+			  "gluster1":{
+				  "ip":"192.168.33.10"
+			  },
+			  "gluster2":{
+				  "ip":"192.168.33.11"
+			  }
+		  }
+	  }
+  },
+  "override_attributes": {
+	  "opsworks":{
+		  "layers":{
+			  "glusterfs":{
+				  "instances":{
+					  "gluster1":{
+						  "private_ip":"192.168.33.10"
+					  },
+					  "gluster2":{
+						  "private_ip":"192.168.33.11"
+					  }
+				  }
+			  }
+		  }
+	  }
+  },
+  "chef_type": "role",
+  "run_list": [
+	  "glusterfs::default",
+	  "glusterfs::server"
+  ],
+  "env_run_lists": {
+  }
+}
