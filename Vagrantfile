@@ -27,6 +27,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.define "client" do |client|
 		client.vm.box = "precise64"
 		client.vm.network :private_network, ip: "192.168.33.12"
+		client.vm.provision :chef_solo do |chef|
+			chef.cookbooks_path = "cookbooks"
+			chef.roles_path = "roles"
+			chef.add_role "client"
+		end
 	end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles

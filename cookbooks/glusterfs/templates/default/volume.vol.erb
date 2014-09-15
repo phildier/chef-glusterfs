@@ -1,0 +1,18 @@
+<% 
+vols = []
+@servers.each do |ip| 
+	vol_name = "remot#{idx++}"
+	vols << vol_name
+%>
+volume <%= vol_name %>
+  type protocol/client
+  option transport-type tcp
+  option remote-host <%= ip %>
+  option remote-subvolume <%= device %>
+end-volume
+<% end %>
+
+volume replicate
+	type cluster/replicate
+	subvolumes <%= vols.join(" ") %>
+end-volume
