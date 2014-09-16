@@ -36,7 +36,7 @@
   "chef_type": "role",
   "run_list": [
 	  "glusterfs::default",
-	  "glusterfs::server"
+	  "glusterfs::opsworks_server"
   ],
   "env_run_lists": {
   }
