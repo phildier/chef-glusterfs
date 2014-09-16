@@ -1,15 +1,18 @@
 <% 
 vols = []
+idx = 0
 @servers.each do |ip| 
-	vol_name = "remot#{idx++}"
+	vol_name = "remote#{idx}"
 	vols << vol_name
+	idx += 1
 %>
 volume <%= vol_name %>
   type protocol/client
   option transport-type tcp
   option remote-host <%= ip %>
-  option remote-subvolume <%= device %>
+  option remote-subvolume <%= @device %>
 end-volume
+
 <% end %>
 
 volume replicate
