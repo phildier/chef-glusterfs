@@ -39,7 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # some recipes and/or roles.
   #
 	config.vm.provision :chef_solo do |chef|
-		chef.cookbooks_path = "cookbooks"
+		chef.cookbooks_path = "."
 		chef.add_recipe "glusterfs"
 	end
   #   chef.roles_path = "../my-recipes/roles"
