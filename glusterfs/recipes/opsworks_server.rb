@@ -20,5 +20,4 @@ glusterfs_volume node[:glusterfs][:volume_name] do
 	peers gluster_peers
 	device node[:glusterfs][:device]
 	mount_point node[:glusterfs][:mount_point]
-	force true
 end
