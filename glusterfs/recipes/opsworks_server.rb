@@ -10,6 +10,9 @@ else
 	ip = node[:network][:interfaces][:eth1][:addresses].detect{|k,v| v[:family] == "inet" }.first
 end
 
+log("ip addy #{ip}")
+log(node[:opsworks][:layers])
+
 gluster_peers = []
 node[:opsworks][:layers][opsworks_layer][:instances].each do |name,instance|
 	log(instance[:private_ip])
