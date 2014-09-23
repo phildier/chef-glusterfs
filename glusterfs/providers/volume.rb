@@ -17,6 +17,7 @@ action :create do
 
 	volume_bricks = []
 	new_resource.peers.each do |peer|
+		log "dececting: peer #{peer} device #{device}"
 		volume_bricks << { :peer => peer, :device => device }
 	end
 
