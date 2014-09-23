@@ -21,7 +21,7 @@ action :create do
 		volume_bricks << { :peer => peer, :device => device }
 	end
 
-	if volume_bricks.first[:peer] == new_resource.ip_address then
+	if new_resource.ip_address == volume_bricks.first[:peer] then
 		log("master detected")
 
 		# probe for peer servers, excluding ourself

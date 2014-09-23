@@ -12,7 +12,7 @@ end
 
 gluster_peers = []
 node[:opsworks][:layers][opsworks_layer][:instances].each do |name,instance|
-	gluster_peers.push instance[:private_ip]
+	gluster_peers << instance[:private_ip]
 end
 
 glusterfs_volume node[:glusterfs][:volume_name] do
