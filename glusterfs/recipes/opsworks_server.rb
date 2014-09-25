@@ -10,15 +10,10 @@ else
 	ip = node[:network][:interfaces][:eth1][:addresses].detect{|k,v| v[:family] == "inet" }.first
 end
 
-log("ip addy #{ip}")
-log(node[:opsworks][:layers])
-
 gluster_peers = []
 node[:opsworks][:layers][opsworks_layer][:instances].each do |name,instance|
-	log(instance[:private_ip])
 	gluster_peers << instance[:private_ip]
 end
-log(gluster_peers);
 
 glusterfs_volume node[:glusterfs][:volume_name] do
 	ip_address ip

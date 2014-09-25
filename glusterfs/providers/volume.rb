@@ -6,7 +6,7 @@ action :create do
 	device = new_resource.device || new_resource.mount_point
 	volume_name = new_resource.name
 
-	unless device then
+	unless new_resource.device then
 		directory device do
 			action :create
 			owner "root"
@@ -17,12 +17,11 @@ action :create do
 
 	volume_bricks = []
 	new_resource.peers.each do |peer|
-		log("dececting: peer #{peer} device #{device}")
 		volume_bricks << { :peer => peer, :device => device }
 	end
 
 	if !volume_bricks.empty? && new_resource.ip_address == volume_bricks.first[:peer] then
-		log("master detected")
+		log("Executing master operations")
 
 		# probe for peer servers, excluding ourself
 		new_resource.peers[1..-1].each do |peer|
