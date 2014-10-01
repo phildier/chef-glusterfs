@@ -3,21 +3,25 @@
 action :create do
 	new_resource = @new_resource
 
-	device = new_resource.device || new_resource.mount_point
 	volume_name = new_resource.name
 
-	unless new_resource.device then
-		directory device do
-			action :create
-			owner "root"
-			group "root"
-			mode 0755
+	new_resource.bricks.each do |brick| 
+		unless brick then
+			directory brick do
+				action :create
+				owner "root"
+				group "root"
+				mode 0755
+			end
 		end
 	end
 
 	volume_bricks = []
-	new_resource.peers.each do |peer|
-		volume_bricks << { :peer => peer, :device => device }
+	# sort by name so the order is consistent if json changes
+	new_resource.bricks.sort.each do |brick| 
+		new_resource.peers.sort.each do |peer|
+			volume_bricks << { :peer => peer, :brick => brick }
+		end
 	end
 
 	if !volume_bricks.empty? && new_resource.ip_address == volume_bricks.first[:peer] then
@@ -40,15 +44,20 @@ action :create do
 			# bricks/peers
 			bricks = ""
 			volume_bricks.each do |brick|
-				bricks << " #{brick[:peer]}:#{brick[:device]}"
+				bricks << " #{brick[:peer]}:#{brick[:brick]}"
 			end
 
 			if new_resource.force == true then
 				force = "force"
 			end
 
+			stripes = ""
+			if new_resource.bricks.length > 1 then
+				stripes = "stripe #{new_resource.bricks.length}"
+			end
+
 			# execute
-			cmd = "gluster volume create #{volume_name} #{replicas} transport tcp #{bricks} #{force}"
+			cmd = "gluster volume create #{volume_name} #{stripes} #{replicas} transport tcp #{bricks} #{force}"
 			execute cmd
 		end
 
@@ -63,7 +72,6 @@ action :create do
 	# debug
 	log(volume_bricks.first)
 	log(new_resource.ip_address)
-	log(device)
 	log(volume_bricks)
 
 end

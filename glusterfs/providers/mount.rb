@@ -8,15 +8,13 @@ action :mount do
 	directory new_resource.mount_point
 	directory gluster_dir
 
-	device = new_resource.device || new_resource.mount_point
-
 	volume_file = "#{gluster_dir}/#{volume_name}.vol"
 
 	template volume_file do
 		source "volume.vol.erb"
 		variables ({
 				:servers => new_resource.servers,
-				:device => device
+				:bricks => new_resource.bricks
 				})
 	end
 

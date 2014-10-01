@@ -4,8 +4,8 @@
   "json_class": "Chef::Role",
   "default_attributes": {
 	  "glusterfs":{
-		  "bricks":["/mnt/brick1","/mnt/brick2"],
-		  "mount_point":"/mnt/customer",
+		  "layer":"glusterfs",
+		  "mount_point":"/mnt/gluster_vagrant",
 		  "volume_name":"glusterfs_vagrant",
 		  "peers":{
 			  "gluster1":{
@@ -18,11 +18,25 @@
 	  }
   },
   "override_attributes": {
+	  "opsworks":{
+		  "layers":{
+			  "glusterfs":{
+				  "instances":{
+					  "gluster1":{
+						  "private_ip":"192.168.33.10"
+					  },
+					  "gluster2":{
+						  "private_ip":"192.168.33.11"
+					  }
+				  }
+			  }
+		  }
+	  }
   },
   "chef_type": "role",
   "run_list": [
 	  "glusterfs::default",
-	  "glusterfs::client"
+	  "glusterfs::opsworks_client"
   ],
   "env_run_lists": {
   }

@@ -7,6 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
+# for debugging extended attributes
+package "attr"
+
 apt_repository "ubuntu-glusterfs-3.4" do
 	uri "http://ppa.launchpad.net/semiosis/ubuntu-glusterfs-3.4/ubuntu"
 	distribution node['lsb']['codename']

@@ -10,7 +10,9 @@ volume <%= vol_name %>
   type protocol/client
   option transport-type tcp
   option remote-host <%= ip %>
-  option remote-subvolume <%= @device %>
+  <% @bricks.each do |brick| %>
+  option remote-subvolume <%= brick %>
+  <% end %>
 end-volume
 
 <% end %>
