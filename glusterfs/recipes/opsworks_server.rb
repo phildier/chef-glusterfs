@@ -11,7 +11,7 @@ else
 end
 
 gluster_peers = []
-node[:opsworks][:layers][opsworks_layer][:instances].each do |name,instance|
+node[:opsworks][:layers][opsworks_layer][:instances].sort.map do |name,instance|
 	gluster_peers << instance[:private_ip]
 end
 

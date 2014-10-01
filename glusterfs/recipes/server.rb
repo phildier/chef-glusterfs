@@ -4,7 +4,8 @@ include_recipe "glusterfs::server_common"
 ip = node[:network][:interfaces][:eth1][:addresses].detect{|k,v| v[:family] == "inet" }.first
 
 gluster_peers = []
-node[:glusterfs][:peers].each do |name,instance|
+node[:glusterfs][:peers].sort.map do |name,instance|
+	log("peer #{name}")
 	gluster_peers.push instance[:ip]
 end
 
