@@ -1,8 +1,6 @@
 
 include_recipe "glusterfs::client_common"
 
-device = node[:glusterfs][:device] || node[:glusterfs][:mount_point]
-
 opsworks_layer = node[:glusterfs][:layer]
 
 servers = []
@@ -12,6 +10,6 @@ end
 
 glusterfs_mount node[:glusterfs][:volume_name] do
 	servers servers
-	device device
+	bricks node[:glusterfs][:bricks]
 	mount_point node[:glusterfs][:mount_point]
 end
