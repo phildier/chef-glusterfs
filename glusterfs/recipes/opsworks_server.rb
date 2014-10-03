@@ -18,7 +18,7 @@ end
 glusterfs_volume node[:glusterfs][:volume_name] do
 	ip_address ip
 	peers gluster_peers
-	mount_point node[:glusterfs][:mount_point]
+	bricks node[:glusterfs][:bricks]
 	retries 5
 	retry_delay 60
 end
