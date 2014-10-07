@@ -19,6 +19,18 @@ action :create do
 	volume_bricks = []
 	# sort by name so the order is consistent if json changes
 	new_resource.bricks.sort.each do |brick| 
+
+		# reset brick metadata so it can be added again if it was previously part of a volume
+		if new_resource.reset === true then
+			bash "reset-brick-#{brick}" do
+				command <<-EOH
+					setfattr -x trusted.glusterfs.volume-id #{brick}
+					setfattr -x trusted.gfid #{brick}
+					rm -rf #{brick}/.glusterfs
+				EOH
+			end
+		end
+
 		new_resource.peers.sort.each do |peer|
 			volume_bricks << { :peer => peer, :brick => brick }
 		end

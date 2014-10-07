@@ -5,3 +5,4 @@ attribute :peers,		:kind_of => Array
 attribute :bricks,		:kind_of => Array
 attribute :ip_address,	:kind_of => [String, NilClass]
 attribute :force,		:kind_of => [TrueClass, FalseClass],	:default => false
+attribute :reset,		:kind_of => [TrueClass, FalseClass],	:default => false

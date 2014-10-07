@@ -21,4 +21,5 @@ glusterfs_volume node[:glusterfs][:volume_name] do
 	bricks node[:glusterfs][:bricks]
 	retries 5
 	retry_delay 60
+	reset node[:glusterfs][:reset]
 end
