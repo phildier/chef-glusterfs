@@ -23,7 +23,7 @@ action :create do
 		# reset brick metadata so it can be added again if it was previously part of a volume
 		if new_resource.reset === true then
 			bash "reset-brick-#{brick}" do
-				command <<-EOH
+				code <<-EOH
 setfattr -x trusted.glusterfs.volume-id #{brick}
 setfattr -x trusted.gfid #{brick}
 rm -rf #{brick}/.glusterfs
