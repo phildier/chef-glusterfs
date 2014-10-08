@@ -2,7 +2,7 @@
 include_recipe "glusterfs::default"
 
 package "glusterfs-server"
-package "util-vserver"
+package "attr"
 
 service "glusterfs-server" do
 	action [:enable,:start]
