@@ -1,4 +1,4 @@
-node[:gluseterfs][:bricks].each do |brick|
+node[:glusterfs][:bricks].each do |brick|
 	bash "reset-brick-#{brick}" do
 		code <<-EOH
 setfattr -x trusted.glusterfs.volume-id #{brick}
