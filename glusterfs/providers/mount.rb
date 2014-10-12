@@ -13,6 +13,7 @@ action :mount do
 	template volume_file do
 		source "volume.vol.erb"
 		variables ({
+				:volume_name => volume_name,
 				:servers => new_resource.servers,
 				:bricks => new_resource.bricks
 				})

@@ -5,7 +5,7 @@ opsworks_layer = node[:glusterfs][:layer]
 
 servers = []
 node[:opsworks][:layers][opsworks_layer][:instances].each do |name,peer|
-	servers << peer[:private_ip]
+	servers << peer[:public_dns_name]
 end
 
 glusterfs_mount node[:glusterfs][:volume_name] do

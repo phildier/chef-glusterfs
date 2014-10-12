@@ -1,23 +1,91 @@
-<% 
-vols = []
+<%
+volumes = []
+replicate = []
 idx = 0
-@servers.each do |ip| 
-	vol_name = "remote#{idx}"
-	vols << vol_name
-	idx += 1
+
+@bricks.each do |brick|
+	@servers.each do |server|
+		name = "#{@volume_name}-client-#{idx}"
+		volumes << { 
+			:subvolume => brick,
+			:host => server,
+			:name => name
+		}
+		idx += 1
+		if replicate[idx % @servers.length].nil? then
+			replicate[idx % @servers.length] = []
+		end
+		replicate[idx % @servers.length] << name
+	end
+end
+
+volumes.each do |vol|
 %>
-volume <%= vol_name %>
-  type protocol/client
-  option transport-type tcp
-  option remote-host <%= ip %>
-  <% @bricks.each do |brick| %>
-  option remote-subvolume <%= brick %>
-  <% end %>
+volume <%=vol[:name]%>
+	type protocol/client
+	option transport-type tcp
+	option remote-subvolume <%=vol[:subvolume]%>
+	option remote-host <%=vol[:host]%>
 end-volume
 
-<% end %>
+<%
+end
 
-volume replicate
+idx = 0
+distribute = []
+
+replicate.each do |subvolumes| 
+	name = "#{@volume_name}-replicate-#{idx}"
+	distribute << name
+	idx += 1
+%>
+volume <%=name%>
 	type cluster/replicate
-	subvolumes <%= vols.join(" ") %>
+	subvolumes <%=subvolumes.join(' ')%>
+end-volume
+
+<%
+end
+
+%>
+volume <%=@volume_name%>-dht
+	type cluster/distribute
+	subvolumes <%=distribute.join(' ')%>
+end-volume
+
+volume <%=@volume_name%>-write-behind
+    type performance/write-behind
+    subvolumes <%=@volume_name%>-dht
+end-volume
+
+volume <%=@volume_name%>-read-ahead
+    type performance/read-ahead
+    subvolumes <%=@volume_name%>-write-behind
+end-volume
+
+volume <%=@volume_name%>-io-cache
+    type performance/io-cache
+    subvolumes <%=@volume_name%>-read-ahead
+end-volume
+
+volume <%=@volume_name%>-quick-read
+    type performance/quick-read
+    subvolumes <%=@volume_name%>-io-cache
+end-volume
+
+volume <%=@volume_name%>-open-behind
+    type performance/open-behind
+    subvolumes <%=@volume_name%>-quick-read
+end-volume
+
+volume <%=@volume_name%>-md-cache
+    type performance/md-cache
+    subvolumes <%=@volume_name%>-open-behind
+end-volume
+
+volume <%=@volume_name%>
+    type debug/io-stats
+    option count-fop-hits off
+    option latency-measurement off
+    subvolumes <%=@volume_name%>-md-cache
 end-volume
