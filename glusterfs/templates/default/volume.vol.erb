@@ -12,10 +12,10 @@ idx = 0
 			:name => name
 		}
 		idx += 1
-		if replicate[idx % @servers.length].nil? then
-			replicate[idx % @servers.length] = []
+		if replicate[idx % @bricks.length].nil? then
+			replicate[idx % @bricks.length] = []
 		end
-		replicate[idx % @servers.length] << name
+		replicate[idx % @bricks.length] << name
 	end
 end
 
