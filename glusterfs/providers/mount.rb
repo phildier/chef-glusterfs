@@ -8,19 +8,8 @@ action :mount do
 	directory new_resource.mount_point
 	directory gluster_dir
 
-	volume_file = "#{gluster_dir}/#{volume_name}.vol"
-
-	template volume_file do
-		source "volume.vol.erb"
-		variables ({
-				:volume_name => volume_name,
-				:servers => new_resource.servers,
-				:bricks => new_resource.bricks
-				})
-	end
-
 	mount new_resource.mount_point do
-		device volume_file
+		device "#{new_resource.servers.first}:#{volume_name}"
 		fstype "glusterfs"
 		pass 0
 		action [:mount,:enable]

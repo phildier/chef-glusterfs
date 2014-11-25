@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		gluster1.vm.provision :chef_solo do |chef|
 			chef.cookbooks_path = "."
 			chef.roles_path = "roles"
-			chef.add_role "server"
+			chef.add_role "opsworks_server"
 		end
 	end
 
@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		gluster2.vm.provision :chef_solo do |chef|
 			chef.cookbooks_path = "."
 			chef.roles_path = "roles"
-			chef.add_role "server"
+			chef.add_role "opsworks_server"
 		end
 	end
 
@@ -30,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		client.vm.provision :chef_solo do |chef|
 			chef.cookbooks_path = "."
 			chef.roles_path = "roles"
-			chef.add_role "client"
+			chef.add_role "opsworks_client"
 		end
 	end
 

@@ -23,10 +23,10 @@
 			  "glusterfs":{
 				  "instances":{
 					  "gluster1":{
-						  "private_ip":"192.168.33.10"
+						  "public_dns_name":"192.168.33.10"
 					  },
 					  "gluster2":{
-						  "private_ip":"192.168.33.11"
+						  "public_dns_name":"192.168.33.11"
 					  }
 				  }
 			  }
